@@ -31,6 +31,11 @@ namespace MTConnectApplication
         private Metric mUtilization;
         private Metric mSpindleTime;
 
+        private double mNoise;
+        private double mAvgNoise;
+
+        private IWavePlayer mPlayer;
+        private BufferedWaveProvider mWaveBuffer;
 
         public MTConnectApp()
         {
@@ -65,6 +70,11 @@ namespace MTConnectApplication
 
             connected.Checked = true;
             mStartTime = DateTime.UtcNow;
+
+            mPlayer = new WaveOut();
+            mWaveBuffer = new BufferedWaveProvider(new WaveFormat(8000, 1));
+            mPlayer.Init(mWaveBuffer);
+            mPlayer.Play();
         }
 
         void ReceiveStream(object sender, MTConnect.RealTimeEventArgs args)
@@ -125,10 +135,50 @@ namespace MTConnectApplication
             }
 
             HandleConditions(doc);
+            HandleAudio(doc);
         }
 
         void HandleAudio(XElement doc)
         {
+            XNamespace ns = doc.Name.Namespace;
+
+            char[] sep = { ' ' };
+            var nodes = doc.Descendants(ns + "DisplacementTimeSeries").
+                OrderBy(n => n.Attribute("timestamp").Value);
+            var values = nodes.Where((node) => node.Value != "UNAVAILABLE").
+                SelectMany((node) => node.Value.Split(sep).Where((s) => s.Length > 0).
+                Select((s) => Convert.ToDouble(s))).ToArray();
+
+            // Check if there is nothing in the buffer.
+            if (values.Length == 0) return;
+
+            int count = values.Length * 2;
+            byte[] buffer = new byte[count];
+            for (int i = 0; i < count; i += 2)
+            {
+                // Convert from 0.0 .. 1.0 to a signed short and split into bytes.
+                short sample = (short)(values[i / 2] * 32768.0);
+                buffer[i] = (byte)(sample & 0xFF);
+                buffer[i + 1] = (byte)((sample >> 8) & 0xFF);
+            }
+
+            mNoise = values.Max();
+            mAvgNoise = values.Average((d) => Math.Abs(d));
+
+            magnitude.Text = mNoise.ToString();
+            avgNoise.Text = mAvgNoise.ToString();
+
+            try
+            {
+                Stream memStream = new MemoryStream();
+                mWaveBuffer.AddSamples(buffer, 0, count);
+                memStream.Write(buffer, 0, count);
+                waveViewer.WaveStream = new RawSourceWaveStream(memStream, mWaveBuffer.WaveFormat);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // The wave buffer overflowed, nothing much to do.
+            }
         }
 
         void HandleConditions(XElement doc)
