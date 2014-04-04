@@ -123,6 +123,8 @@ namespace MTConnectApplication
                 producing.Text = "Not Producing";
                 producing.BackColor = Color.Red;
             }
+
+            HandleConditions(doc);
         }
 
         void HandleAudio(XElement doc)
@@ -131,6 +133,12 @@ namespace MTConnectApplication
 
         void HandleConditions(XElement doc)
         {
+            XNamespace ns = doc.Name.Namespace;
+            var nodes = doc.Descendants(ns + "Condition").SelectMany((conds) => conds.Descendants()).
+                OrderBy(n => n.Attribute("timestamp").Value);
+            foreach (var cond in nodes)
+                conditions.Items.Add(cond.Attribute("timestamp").Value + ": " + cond.Name.LocalName + " - " +
+                                        cond.Attribute("type") + " - " + cond.Value);
         }
 
         void HandleConnectionError(object sender, MTConnect.ErrorArgs args)
