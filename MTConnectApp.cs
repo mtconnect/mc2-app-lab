@@ -38,8 +38,10 @@ namespace MTConnectApplication
             mAvailability = new Metric("//m:Availability",
                 (aValues) => aValues["Availability"] == "AVAILABLE");
 
-            mUtilization = new Metric("//m:Execution|//m:ControllerMode",
-                (aValues) => aValues["Execution"] == "ACTIVE" && aValues["ControllerMode"] == "AUTOMATIC");
+            mUtilization = new Metric("//m:Execution|//m:ControllerMode|//m:FunctionalMode",
+                (aValues) => aValues["Execution"] == "ACTIVE" && 
+                             aValues["ControllerMode"] == "AUTOMATIC" && 
+                             aValues["FunctionalMode"] == "PRODUCTION");
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -99,6 +101,7 @@ namespace MTConnectApplication
 
             execution.Text = mUtilization.Values["Execution"];
             controllerMode.Text = mUtilization.Values["ControllerMode"];
+            functionalMode.Text = mUtilization.Values["FunctionalMode"];
 
             if (mUtilization.Accumulating)
             {
