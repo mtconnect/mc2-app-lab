@@ -28,6 +28,7 @@ namespace MTConnectApplication
         private DateTime mStartTime;
 
         private Metric mAvailability;
+        private Metric mUtilization;
 
 
         public MTConnectApp()
@@ -36,6 +37,9 @@ namespace MTConnectApplication
 
             mAvailability = new Metric("//m:Availability",
                 (aValues) => aValues["Availability"] == "AVAILABLE");
+
+            mUtilization = new Metric("//m:Execution",
+                (aValues) => aValues["Execution"] == "ACTIVE");
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -88,6 +92,23 @@ namespace MTConnectApplication
             mAvailability.Evaluate(doc, aMgr);
             availability.Value = (int)mAvailability.PercentAccumulatedTime(totalTime);
             availabilityValue.Text = mAvailability.AccumulatedSeconds.ToString();
+
+            mUtilization.Evaluate(doc, aMgr);
+            utilization.Value = (int)mUtilization.PercentAccumulatedTime(totalTime);
+            utilizationValue.Text = mUtilization.AccumulatedSeconds.ToString();
+
+            execution.Text = mUtilization.Values["Execution"];
+
+            if (mUtilization.Accumulating)
+            {
+                producing.Text = "Producing";
+                producing.BackColor = Color.Green;
+            }
+            else
+            {
+                producing.Text = "Not Producing";
+                producing.BackColor = Color.Red;
+            }
         }
 
         void HandleAudio(XElement doc)
