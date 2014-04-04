@@ -48,7 +48,8 @@ namespace MTConnectApplication
                 (aValues) => aValues["Execution"] == "ACTIVE" && 
                              aValues["ControllerMode"] == "AUTOMATIC" && 
                              aValues["FunctionalMode"] == "PRODUCTION" && 
-                             mSpindleTime.Accumulating);
+                             mSpindleTime.Accumulating &&
+                             mNoise > 0.20);
 
             mSpindleTime = new Metric("//m:ComponentStream[@name='C']//m:RotaryVelocity",
                 (aValues) => aValues.HasValue("RotaryVelocity") && 
