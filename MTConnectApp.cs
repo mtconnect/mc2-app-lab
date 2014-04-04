@@ -25,10 +25,17 @@ namespace MTConnectApplication
         static int heartbeat = 10000;
         Uri mUri;
 
+        private DateTime mStartTime;
+
+        private Metric mAvailability;
+
 
         public MTConnectApp()
         {
             InitializeComponent();
+
+            mAvailability = new Metric("//m:Availability",
+                (aValues) => aValues["Availability"] == "AVAILABLE");
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -45,6 +52,7 @@ namespace MTConnectApplication
             stream.Start();
 
             connected.Checked = true;
+            mStartTime = DateTime.UtcNow;
         }
 
         void ReceiveStream(object sender, MTConnect.RealTimeEventArgs args)
@@ -70,6 +78,16 @@ namespace MTConnectApplication
 
         private void HandleDocument(XElement doc, XmlNamespaceManager aMgr)
         {
+            XNamespace ns = doc.Name.Namespace;
+            XElement header = doc.Descendants(ns + "Header").First();
+            string time = header.Attribute("creationTime").Value;
+            DateTime createTime = DateTime.Parse(time).ToUniversalTime();
+
+            double totalTime = createTime.Subtract(mStartTime).TotalMilliseconds;
+
+            mAvailability.Evaluate(doc, aMgr);
+            availability.Value = (int)mAvailability.PercentAccumulatedTime(totalTime);
+            availabilityValue.Text = mAvailability.AccumulatedSeconds.ToString();
         }
 
         void HandleAudio(XElement doc)
