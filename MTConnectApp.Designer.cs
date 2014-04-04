@@ -34,6 +34,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.connected = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.spindleTimeBar = new System.Windows.Forms.ProgressBar();
             this.availabilityValue = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.availability = new System.Windows.Forms.ProgressBar();
@@ -50,15 +51,25 @@
             this.functionalMode = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.avgNoise = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.magnitude = new System.Windows.Forms.TextBox();
             this.waveViewer = new NAudio.Gui.WaveViewer();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.conditions = new System.Windows.Forms.ListBox();
             this.producing = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.avgNoise = new System.Windows.Forms.TextBox();
-            this.spindleTimeBar = new System.Windows.Forms.ProgressBar();
+            this.metricBar1 = new System.Windows.Forms.ProgressBar();
+            this.metricValue1 = new System.Windows.Forms.TextBox();
+            this.metricBar2 = new System.Windows.Forms.ProgressBar();
+            this.metricValue2 = new System.Windows.Forms.TextBox();
+            this.metricBar4 = new System.Windows.Forms.ProgressBar();
+            this.metricValue4 = new System.Windows.Forms.TextBox();
+            this.metricBar3 = new System.Windows.Forms.ProgressBar();
+            this.metricValue3 = new System.Windows.Forms.TextBox();
+            this.dataItem1 = new System.Windows.Forms.TextBox();
+            this.dataItem2 = new System.Windows.Forms.TextBox();
+            this.dataItem3 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -113,6 +124,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.metricBar4);
+            this.groupBox1.Controls.Add(this.metricValue4);
+            this.groupBox1.Controls.Add(this.metricBar3);
+            this.groupBox1.Controls.Add(this.metricValue3);
+            this.groupBox1.Controls.Add(this.metricBar2);
+            this.groupBox1.Controls.Add(this.metricValue2);
+            this.groupBox1.Controls.Add(this.metricBar1);
+            this.groupBox1.Controls.Add(this.metricValue1);
             this.groupBox1.Controls.Add(this.spindleTimeBar);
             this.groupBox1.Controls.Add(this.availabilityValue);
             this.groupBox1.Controls.Add(this.label9);
@@ -122,12 +141,20 @@
             this.groupBox1.Controls.Add(this.utilizationValue);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.utilization);
-            this.groupBox1.Location = new System.Drawing.Point(24, 207);
+            this.groupBox1.Location = new System.Drawing.Point(24, 283);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(462, 276);
+            this.groupBox1.Size = new System.Drawing.Size(462, 222);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Metrics";
+            // 
+            // spindleTimeBar
+            // 
+            this.spindleTimeBar.Location = new System.Drawing.Point(92, 78);
+            this.spindleTimeBar.Name = "spindleTimeBar";
+            this.spindleTimeBar.Size = new System.Drawing.Size(228, 23);
+            this.spindleTimeBar.Step = 1;
+            this.spindleTimeBar.TabIndex = 32;
             // 
             // availabilityValue
             // 
@@ -232,6 +259,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.dataItem3);
+            this.groupBox2.Controls.Add(this.dataItem2);
+            this.groupBox2.Controls.Add(this.dataItem1);
             this.groupBox2.Controls.Add(this.functionalMode);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.execution);
@@ -240,7 +270,7 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(24, 78);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(453, 116);
+            this.groupBox2.Size = new System.Drawing.Size(453, 186);
             this.groupBox2.TabIndex = 19;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Data";
@@ -275,6 +305,23 @@
             this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Sound";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(215, 24);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(85, 13);
+            this.label10.TabIndex = 29;
+            this.label10.Text = "Avg Noise Level";
+            // 
+            // avgNoise
+            // 
+            this.avgNoise.Enabled = false;
+            this.avgNoise.Location = new System.Drawing.Point(307, 21);
+            this.avgNoise.Name = "avgNoise";
+            this.avgNoise.Size = new System.Drawing.Size(92, 20);
+            this.avgNoise.TabIndex = 28;
             // 
             // label7
             // 
@@ -337,30 +384,93 @@
             this.producing.Text = "Not Producing";
             this.producing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label10
+            // metricBar1
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(215, 24);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(85, 13);
-            this.label10.TabIndex = 29;
-            this.label10.Text = "Avg Noise Level";
+            this.metricBar1.Location = new System.Drawing.Point(92, 107);
+            this.metricBar1.Name = "metricBar1";
+            this.metricBar1.Size = new System.Drawing.Size(228, 23);
+            this.metricBar1.Step = 1;
+            this.metricBar1.TabIndex = 34;
             // 
-            // avgNoise
+            // metricValue1
             // 
-            this.avgNoise.Enabled = false;
-            this.avgNoise.Location = new System.Drawing.Point(307, 21);
-            this.avgNoise.Name = "avgNoise";
-            this.avgNoise.Size = new System.Drawing.Size(92, 20);
-            this.avgNoise.TabIndex = 28;
+            this.metricValue1.Enabled = false;
+            this.metricValue1.Location = new System.Drawing.Point(326, 107);
+            this.metricValue1.Name = "metricValue1";
+            this.metricValue1.Size = new System.Drawing.Size(92, 20);
+            this.metricValue1.TabIndex = 33;
             // 
-            // spindleTimeBar
+            // metricBar2
             // 
-            this.spindleTimeBar.Location = new System.Drawing.Point(92, 78);
-            this.spindleTimeBar.Name = "spindleTimeBar";
-            this.spindleTimeBar.Size = new System.Drawing.Size(228, 23);
-            this.spindleTimeBar.Step = 1;
-            this.spindleTimeBar.TabIndex = 32;
+            this.metricBar2.Location = new System.Drawing.Point(92, 134);
+            this.metricBar2.Name = "metricBar2";
+            this.metricBar2.Size = new System.Drawing.Size(228, 23);
+            this.metricBar2.Step = 1;
+            this.metricBar2.TabIndex = 36;
+            // 
+            // metricValue2
+            // 
+            this.metricValue2.Enabled = false;
+            this.metricValue2.Location = new System.Drawing.Point(326, 134);
+            this.metricValue2.Name = "metricValue2";
+            this.metricValue2.Size = new System.Drawing.Size(92, 20);
+            this.metricValue2.TabIndex = 35;
+            // 
+            // metricBar4
+            // 
+            this.metricBar4.Location = new System.Drawing.Point(92, 190);
+            this.metricBar4.Name = "metricBar4";
+            this.metricBar4.Size = new System.Drawing.Size(228, 23);
+            this.metricBar4.Step = 1;
+            this.metricBar4.TabIndex = 40;
+            // 
+            // metricValue4
+            // 
+            this.metricValue4.Enabled = false;
+            this.metricValue4.Location = new System.Drawing.Point(326, 190);
+            this.metricValue4.Name = "metricValue4";
+            this.metricValue4.Size = new System.Drawing.Size(92, 20);
+            this.metricValue4.TabIndex = 39;
+            // 
+            // metricBar3
+            // 
+            this.metricBar3.Location = new System.Drawing.Point(92, 163);
+            this.metricBar3.Name = "metricBar3";
+            this.metricBar3.Size = new System.Drawing.Size(228, 23);
+            this.metricBar3.Step = 1;
+            this.metricBar3.TabIndex = 38;
+            // 
+            // metricValue3
+            // 
+            this.metricValue3.Enabled = false;
+            this.metricValue3.Location = new System.Drawing.Point(326, 163);
+            this.metricValue3.Name = "metricValue3";
+            this.metricValue3.Size = new System.Drawing.Size(92, 20);
+            this.metricValue3.TabIndex = 37;
+            // 
+            // dataItem1
+            // 
+            this.dataItem1.Enabled = false;
+            this.dataItem1.Location = new System.Drawing.Point(100, 103);
+            this.dataItem1.Name = "dataItem1";
+            this.dataItem1.Size = new System.Drawing.Size(228, 20);
+            this.dataItem1.TabIndex = 24;
+            // 
+            // dataItem2
+            // 
+            this.dataItem2.Enabled = false;
+            this.dataItem2.Location = new System.Drawing.Point(100, 129);
+            this.dataItem2.Name = "dataItem2";
+            this.dataItem2.Size = new System.Drawing.Size(228, 20);
+            this.dataItem2.TabIndex = 25;
+            // 
+            // dataItem3
+            // 
+            this.dataItem3.Enabled = false;
+            this.dataItem3.Location = new System.Drawing.Point(100, 155);
+            this.dataItem3.Name = "dataItem3";
+            this.dataItem3.Size = new System.Drawing.Size(228, 20);
+            this.dataItem3.TabIndex = 26;
             // 
             // MTConnectApp
             // 
@@ -425,6 +535,17 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox avgNoise;
         private System.Windows.Forms.ProgressBar spindleTimeBar;
+        private System.Windows.Forms.ProgressBar metricBar4;
+        private System.Windows.Forms.TextBox metricValue4;
+        private System.Windows.Forms.ProgressBar metricBar3;
+        private System.Windows.Forms.TextBox metricValue3;
+        private System.Windows.Forms.ProgressBar metricBar2;
+        private System.Windows.Forms.TextBox metricValue2;
+        private System.Windows.Forms.ProgressBar metricBar1;
+        private System.Windows.Forms.TextBox metricValue1;
+        private System.Windows.Forms.TextBox dataItem1;
+        private System.Windows.Forms.TextBox dataItem2;
+        private System.Windows.Forms.TextBox dataItem3;
     }
 }
 
