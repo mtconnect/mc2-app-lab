@@ -29,6 +29,7 @@ namespace MTConnectApplication
 
         private Metric mAvailability;
         private Metric mUtilization;
+        private Metric mSpindleTime;
 
 
         public MTConnectApp()
@@ -41,7 +42,12 @@ namespace MTConnectApplication
             mUtilization = new Metric("//m:Execution|//m:ControllerMode|//m:FunctionalMode",
                 (aValues) => aValues["Execution"] == "ACTIVE" && 
                              aValues["ControllerMode"] == "AUTOMATIC" && 
-                             aValues["FunctionalMode"] == "PRODUCTION");
+                             aValues["FunctionalMode"] == "PRODUCTION" && 
+                             mSpindleTime.Accumulating);
+
+            mSpindleTime = new Metric("//m:ComponentStream[@name='C']//m:RotaryVelocity",
+                (aValues) => aValues.HasValue("RotaryVelocity") && 
+                             Convert.ToDouble(aValues["RotaryVelocity"]) > 1000.0);
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -94,6 +100,10 @@ namespace MTConnectApplication
             mAvailability.Evaluate(doc, aMgr);
             availability.Value = (int)mAvailability.PercentAccumulatedTime(totalTime);
             availabilityValue.Text = mAvailability.AccumulatedSeconds.ToString();
+
+            mSpindleTime.Evaluate(doc, aMgr);
+            spindleTime1.Text = mSpindleTime.AccumulatedSeconds.ToString();
+            spindleTimeBar.Value = (int) mSpindleTime.PercentAccumulatedTime(totalTime);
 
             mUtilization.Evaluate(doc, aMgr);
             utilization.Value = (int)mUtilization.PercentAccumulatedTime(totalTime);
